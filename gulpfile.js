@@ -51,7 +51,7 @@ gulp.task('test', function (callback) {
     singleRun: true
     }, function(exitStatus) { 
         callback(); 
-        process.exit(1);
+        process.exit(exitStatus);
     }).start();
 });
 
@@ -60,7 +60,7 @@ gulp.task('tdd', function (callback) {
         configFile: __dirname + '/karma.conf.js'
     }, function(exitStatus) { 
         callback();
-        process.exit(1);
+        process.exit(exitStatus);
     }).start();
 });
 
