@@ -8,6 +8,7 @@ var imagemin = require('gulp-imagemin');
 var cache = require('gulp-cache');
 var del = require('del');
 var runSequence = require('run-sequence');
+var KarmaServer = require('karma').Server;
 
 gulp.task('sass', function(){
     return gulp.src('app/sass/**/*.scss')
@@ -42,6 +43,25 @@ gulp.task('clean:dist', function(){
 
 gulp.task('cache:clear', function (callback) {
     return cache.clearAll(callback)
+});
+
+gulp.task('test', function (callback) {
+  new KarmaServer({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+    }, function(exitStatus) { 
+        callback(); 
+        process.exit(1);
+    }).start();
+});
+
+gulp.task('tdd', function (callback) {
+    new KarmaServer({
+        configFile: __dirname + '/karma.conf.js'
+    }, function(exitStatus) { 
+        callback();
+        process.exit(1);
+    }).start();
 });
 
 gulp.task('build', function (callback){
