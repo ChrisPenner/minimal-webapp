@@ -1,3 +1,4 @@
 node_modules/
-app/jspm_packages/
+app/scripts/vendor/
 app/css/
+dist/

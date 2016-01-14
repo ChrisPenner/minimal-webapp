@@ -1,5 +1,5 @@
 {
-  "name": "jumper",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "jspm": {
-    "dependencies": {},
+    "directories": {
+      "baseURL": "app/scripts",
+      "packages": "app/scripts/vendor"
+    },
     "devDependencies": {
       "babel": "npm:babel-core@^5.8.24",
       "babel-runtime": "npm:babel-runtime@^5.8.24",
@@ -24,10 +27,12 @@
     "gulp-cache": "^0.4.1",
     "gulp-cssnano": "^2.1.0",
     "gulp-imagemin": "^2.4.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-jspm": "^0.5.5",
     "gulp-sass": "^2.1.1",
     "gulp-sourcemaps": "^1.6.0",
     "jasmine-core": "^2.4.1",
-    "jspm": "^0.16.22",
+    "jspm": "^0.16.23",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",

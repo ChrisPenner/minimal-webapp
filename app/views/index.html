@@ -2,14 +2,17 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
         <title></title>
-        <script src="jspm_packages/system.js"></script>
-        <script src="config.js"></script>
+        <!-- inject:js -->
+        <script src="scripts/vendor/system.js"></script>
+        <script src="scripts/config.js"></script>
         <script>
             System.import('scripts/app')
             .catch(console.error.bind(console));
         </script>
+        <!-- endinject -->
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>

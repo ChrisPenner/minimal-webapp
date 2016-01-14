@@ -9,6 +9,10 @@ var cache = require('gulp-cache');
 var del = require('del');
 var runSequence = require('run-sequence');
 var KarmaServer = require('karma').Server;
+var jspm =  require('gulp-jspm');
+var inject =  require('gulp-inject');
+
+var baseDir = 'app'
 
 gulp.task('sass', function(){
     return gulp.src('app/sass/**/*.scss')
@@ -17,10 +21,8 @@ gulp.task('sass', function(){
         .pipe(autoprefixer())
         .pipe(cssnano())
         .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('app/css'))
-        .pipe(browserSync.reload({
-            stream: true
-        }))
+        .pipe(gulp.dest( baseDir + '/css'))
+        .pipe(browserSync.stream())
 });
 
 gulp.task('images', function(){
@@ -32,7 +34,8 @@ gulp.task('images', function(){
 gulp.task('browser-sync', function(){
     browserSync({
         server: {
-            baseDir: 'app'
+            baseDir: baseDir,
+            index: 'views/index.html'
         }
     });
 });
@@ -64,9 +67,22 @@ gulp.task('tdd', function (callback) {
     }).start();
 });
 
+gulp.task('bundle', function(){
+    var bundleStream = gulp.src('app/scripts/app.js')
+    .pipe(jspm({selfExecutingBundle: true}))
+    .pipe(gulp.dest('dist/scripts/'));
+
+    // Inject (and copy) html files.
+    return gulp.src(['app/**/*.html', '!app/scripts/vendor/**'])
+    .pipe(inject(bundleStream, {ignorePath: 'dist/'}))
+    .pipe(gulp.dest('dist/'));
+});
+
 gulp.task('build', function (callback){
+  // Execute tasks for dist.
+  baseDir = 'dist'
   runSequence('clean:dist', 
-    ['sass', 'images'],
+    ['sass', 'images', 'bundle'],
     callback
   )
 });
@@ -77,7 +93,10 @@ gulp.task('default', ['serve'], function(){
 
 gulp.task('serve', ['browser-sync', 'sass'], function(){
     gulp.watch('app/sass/**/*.scss', ['sass']);
-    gulp.watch('app/*.html', browserSync.reload);
-    gulp.watch('app/scripts/**/*.js', browserSync.reload);
+    gulp.watch("app/**/*.html").on('change', browserSync.reload);
+    gulp.watch("app/scripts/**/*.js").on('change', browserSync.reload);
 });
 
+gulp.task('serve:dist', ['build'], function(callback){
+    runSequence('browser-sync');
+});
